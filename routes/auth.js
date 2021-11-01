@@ -2,9 +2,9 @@ import express, { Router } from "express";
 
 const router = express.Router()
 
+//controllers
+import { register } from "../controllers/auth";
 
-router.post("/register", (req, res) => {
-    console.log("REGISTER ENDPOINT =>", req.body)
-})
+router.post("/register", register)
 
 module.exports = router;
