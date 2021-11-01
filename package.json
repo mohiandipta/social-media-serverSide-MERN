@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "social media app",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohiandipta/social-media-serverSide-MERN.git"
+  },
+  "keywords": [
+    "mern",
+    "node.js",
+    "react.js"
+  ],
+  "author": "Mohian Dipta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohiandipta/social-media-serverSide-MERN/issues"
+  },
+  "homepage": "https://github.com/mohiandipta/social-media-serverSide-MERN#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.14"
+  }
+}
