@@ -1,6 +1,8 @@
 import User from '../models/user'
 import { hashPassword, comparePassword } from '../helpers/auth'
+import jwt from 'jsonwebtoken'
 
+// register controller
 export const register = async (req, res) => {
     // console.log("REGISTER ENDPOINT =>", req.body)
     const { fName, lName, email, password, secret } = req.body
@@ -42,3 +44,38 @@ export const register = async (req, res) => {
         return res.status(400).send("Error, Try Again");
     }
 };
+
+
+// login controller
+export const login = async (req, res) => {
+    console.log(req.body)
+    try {
+        const { email, password } = req.body
+        // check if db has an user data
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.status(400).send('User can not be found! Please enter correct email address')
+        }
+        // check password
+        const match = await comparePassword(password, user.password)
+        if (!match) {
+            return res.status(400).send('Wrong password!')
+        }
+        //
+        // CREATE SIGNED TOKEN (JWT)
+        const token = jwt.sign(
+            { _id: user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: '3d' } //token expire duration
+        )
+        user.password = undefined
+        user.secret = undefined
+        res.json({
+            user: user.email,
+            token: token
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(400).send('Error. Try again')
+    }
+}
