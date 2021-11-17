@@ -79,3 +79,15 @@ export const login = async (req, res) => {
         return res.status(400).send('Error. Try again')
     }
 }
+
+
+// currentUser controller
+export const currentUser = async (res, req) => {
+    try {
+        const user = await User.findById(req.user._id)
+        res.json({ ok: true })
+    } catch (error) {
+        console.log(errro)
+        res.send.status(400)
+    }
+}
