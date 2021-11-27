@@ -1,6 +1,7 @@
 import User from '../models/user'
 import { hashPassword, comparePassword } from '../helpers/auth'
 import jwt from 'jsonwebtoken'
+import expressJwt from "express-jwt"
 
 // register controller
 export const register = async (req, res) => {
@@ -78,4 +79,10 @@ export const login = async (req, res) => {
         console.log(error)
         return res.status(400).send('Error. Try again')
     }
+}
+
+
+// currentUser
+export const currentUser = async (res, req) => {
+    console.log(req.headers)
 }
