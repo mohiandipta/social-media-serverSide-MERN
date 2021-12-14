@@ -3,6 +3,7 @@ import { hashPassword, comparePassword } from '../helpers/auth'
 import jwt from 'jsonwebtoken'
 import expressJwt from "express-jwt"
 import { json } from 'express';
+import user from '../models/user';
 
 // register controller
 export const register = async (req, res) => {
@@ -92,5 +93,45 @@ export const currentUser = async (req, res) => {
     } catch (err) {
         console.log(err)
         res.sendStatus(400)
+    }
+}
+
+
+
+// forgotPassword
+export const forgotPassword = async (req, res) => {
+    // console.log(req.body)
+    const { email, newPassword, secret } = req.body
+
+    // validation
+    if (!newPassword || !newPassword < 6) {
+        return res.json({
+            error: 'New password is required and should be minimum 6 digit long'
+        })
+    }
+    if (!secret) {
+        return res.json({
+            error: 'Secret is required'
+        })
+    }
+
+    // check user
+    const user = await User.findOne({ email, secret })
+    if (!user) {
+        return res.json({
+            error: "User not found"
+        })
+    }
+    try {
+        const hashed = await hashPassword(newPassword)
+        await User.findByIdAndUpdate(user._id, { password: hashed })
+        return res.json({
+            success: 'New password set successfully'
+        })
+    } catch (error) {
+        console.log(error)
+        return res.json({
+            error: "Something  wrong, Try again!"
+        })
     }
 }
